@@ -28,4 +28,6 @@ ref.watch(counterProvider.notifier).state = 値;
 ```
 
 ## 参考
+- [StateProvider](https://riverpod.dev/ja/docs/providers/state_provider/)
 - [【Flutter×Riverpod】StateProviderの使い方｜プロバイダで状態管理](https://flutternyumon.com/riverpod-how-to-use-stateprovider/)
+- [【Flutter】Riverpod 入門](https://zenn.dev/naoya_maeda/articles/a8bbf40a202c74)

@@ -34,3 +34,6 @@ Widgetを動的に表示
 
 Callback / コールバック関数
 - https://zenn.dev/hassan/articles/81fa728f140aa3
+
+ログイン機構 / login
+- https://www.memory-lovers.blog/entry/2022/04/07/173000
