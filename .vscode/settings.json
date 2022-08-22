@@ -2,6 +2,6 @@
 	"editor.tabSize": 2,
 	"japanese-proofreading.textlint.全角文字と半角文字の間": true,
 	"files.autoSave": "afterDelay",
-	"editor.insertSpaces": false,
+	"editor.insertSpaces": true,
 	"editor.fontFamily": "HackGen35Nerd, 'Ricty Diminished', Menlo, Monaco, 'Courier New', monospace"
 }
