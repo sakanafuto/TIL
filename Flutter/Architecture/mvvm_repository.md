@@ -80,9 +80,49 @@ class HomeViewModel extends ChangeNotifier {
 
 useProviderは、ConsumerWidgetの場合watchすることで再現可能。
 
-HookBuilderもFlutter Hooksのクラスである。このビルダーの中でuseProviderを生成して、その値が変更された場合には、この中だけでリビルドが起こる。Flutter Hooksを使わずにRiverpodだけでやる場合には、Comsumerで同様のことが可能。
+HookBuilderもFlutter Hooksのクラスである。このビルダーの中でuseProviderを生成して、その値が変更された場合にはこの中だけでリビルドが起こる。Flutter Hooksを使わずにRiverpodだけでやる場合には、Comsumerで同様のことが可能。
 
 useFutureはFutureBuilderと同じ動作をする。
+
+:::details useFutureの例
+
+FutureやStreamを扱うもので、FutureBuilderやStreamBuilderが簡単に書けるようになる。以下はpackage_infoを用いてアプリ情報を取得する場合の記述の仕方。
+
+*Hooksなし*
+
+```dart
+class NotUseHooksSample extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Text('appName = ${snapshot.data.appName}');
+        } else {
+          return Container();
+        }});}}
+```
+
+*Hooksあり*
+
+ネストが浅くなりシンプルになる。
+
+```dart
+class UseFutureSample extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final packageInfo = useMemoized(PackageInfo.fromPlatform);
+    final snapshot = useFuture(packageInfo);
+    if (snapshot.hasData) {
+      return Text('appName = ${snapshot.data.appName}');
+    } else {
+      return Container();
+    }}
+}
+```
+
+:::
 
 useMemoizedはAsyncMemoizerと似たよう動作で、配列で渡しているKeysの値が同じならばfetchNewsメソッド部分のキャッシュを返してリビルドしない。ここではnewsデータをtoStringしたものをキーに含めている。
 
@@ -150,3 +190,121 @@ class HomePage extends HookWidget {
   }
 }
 ```
+
+### Repository
+
+Freezedを使用しModelを自動生成している。
+NewsRepositoryとNewsRepositoryImplがいる。Repositoryは不要そうに見えるがMVVMとRepository pattern実現する上で、ViewModelがどこからデータを取得・更新するのかを意識させないためにビジネスロジックとデータ操作を分離することを目的としているため必要である。たとえば、ネットワークの状況によってサーバから取得するか、ローカルキャッシュを使うかの決定はRepositoryで行っている。
+
+```dart
+
+/// news_repository.dart
+import 'package:app/data/model/news.dart';
+
+abstract class NewsRepository {
+  Future<News> getNews();
+}
+///
+
+/// news_repository_impl.dart
+import 'package:app/data/model/news.dart';
+import 'package:app/data/remote/news_data_source.dart';
+import 'package:app/data/repository/news_repository.dart';
+import 'package:flutter/material.dart';
+
+class NewsRepositoryImpl implements NewsRepository {
+  NewsRepositoryImpl({@required NewsDataSource dataSource})
+      : _dataSource = dataSource;
+
+  final NewsDataSource _dataSource;
+
+  @override
+  Future<News> getNews() async {
+    return _dataSource.getNews();
+  }
+}
+///
+
+/// news_repository_provider.dart
+import 'package:app/data/provider/news_data_source_provider.dart';
+import 'package:app/data/repository/news_repository.dart';
+import 'package:app/data/repository/news_repository_impl.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final newsRepositoryProvider = Provider<NewsRepository>(
+    (ref) => NewsRepositoryImpl(dataSource: ref.read(newsDataSourceProvider)));
+///
+
+```
+
+### DataSource
+
+DataSourceは実際にサーバーのAPIを叩いたり、ローカルから取得したりする処理を書く。DataSourceを取得先ごとに作ることが一般的。
+
+```dart 
+
+/// news_data_source.dart
+import 'package:app/data/model/news.dart';
+
+abstract class NewsDataSource {
+  Future<News> getNews();
+}
+///
+
+/// news_data_source_impl.dart
+import 'package:app/constants.dart';
+import 'package:app/data/model/news.dart';
+import 'package:app/data/remote/news_data_source.dart';
+import 'package:app/util/ext/date_time.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:flutter/foundation.dart';
+
+class NewsDataSourceImpl implements NewsDataSource {
+  NewsDataSourceImpl({@required Dio dio}) : _dio = dio;
+
+  final Dio _dio;
+
+  @override
+  Future<News> getNews() async {
+    return _dio
+        .get<Map<String, dynamic>>(
+          '/v2/everything',
+          queryParameters: <String, String>{
+            'q': 'anim',
+            'from': DateTime.now()
+                .subtract(
+                  const Duration(days: 28),
+                )
+                .toLocal()
+                .formatYYYYMMdd(),
+            'sortBy': 'publishedAt',
+            'language': 'en',
+            'apiKey': Constants.of().apiKey,
+          },
+          options: buildCacheOptions(const Duration(hours: 1)),
+        )
+        .then((response) => News.fromJson(response.data));
+  }
+}
+///
+
+/// news_data_source_provider.dart
+import 'package:app/data/remote/news_data_source.dart';
+import 'package:app/data/remote/news_data_source_impl.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'dio_provider.dart';
+
+final newsDataSourceProvider = Provider<NewsDataSource>(
+    (ref) => NewsDataSourceImpl(dio: ref.read(dioProvider)));
+///
+
+```
+
+## 参考
+
+- [Flutter HooksのuseXXXの使い方](https://qiita.com/mkosuke/items/f88419d0f4d41ed6d858)
+- [【Flutter】dio + freezed でAPIレスポンスをResult<T>で受け取る](https://qiita.com/muttsu-623/items/2fa68fb6689c76f5415f)
+- [Flutter : dioのみでの通信基盤作成](https://qiita.com/Morisan/items/0b90505000d5c3183b9b)
+- [Flutter通信ライブラリ選定 ~ 選ばれたのはRetrofitでした ~](https://qiita.com/Morisan/items/9688ab92ff94024353c5)
