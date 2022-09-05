@@ -105,3 +105,7 @@ print(
   )
 );
 ```
+
+## 参考
+
+- https://okutaro.com/2021/04/16/2021-4-16-flutter-freezed%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8readme%E3%81%AE%E8%A8%B3%E3%83%91%E3%83%BC%E3%83%882/
