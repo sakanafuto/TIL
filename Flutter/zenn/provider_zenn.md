@@ -194,7 +194,7 @@ return HumongousWidget(
 Provider.of<CartModel>(context, listen: false).removeAll();
 ```
 
-上記の行をビルドメソッドで使用すると、notifyListeners が呼ばれたときにこのウィジェットを再構築することはありません。
+上記の行をビルドメソッドで使用すると、notifyListenersが呼ばれたときにこのウィジェットを再構築することはありません。
 
 # まとめ
 
