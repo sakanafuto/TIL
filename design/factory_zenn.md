@@ -1,5 +1,3 @@
-## Factory Constructor in Dart
-
 [freezed](https://pub.dev/packages/freezed)という便利なパッケージの中で`factory`という言葉が頻出していて、理解せずに先に進むことが難しそうだったので調べてまとめました。[参考](#参考)にある`Saravanan M`さんの記事がとても参考になりました。
 
 ファクトリーデザインパターンの定義は次のとおりです。

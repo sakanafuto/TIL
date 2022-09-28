@@ -19,7 +19,7 @@ $ vi .git_commit_template
 ```
 
 `$ git commit`時に表示される内容を記述する。
-→ "./git_commit_template"
+ファイルは[こちら](.git_commit_template)
 
 ```shell
 

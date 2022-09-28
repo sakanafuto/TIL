@@ -304,6 +304,8 @@ final newsDataSourceProvider = Provider<NewsDataSource>(
 
 ## 参考
 
+- [「minne」はなぜ「MVVM＋UseCase＋Repository」なのか。3つのアーキテクチャを選んだ5つの理由。](https://logmi.jp/tech/articles/325433)
+
 - [Flutter HooksのuseXXXの使い方](https://qiita.com/mkosuke/items/f88419d0f4d41ed6d858)
 - [【Flutter】dio + freezed でAPIレスポンスをResult<T>で受け取る](https://qiita.com/muttsu-623/items/2fa68fb6689c76f5415f)
 - [Flutter : dioのみでの通信基盤作成](https://qiita.com/Morisan/items/0b90505000d5c3183b9b)

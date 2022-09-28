@@ -1,4 +1,8 @@
-## 参考
+# 7ofu's GitHub
+
+[7ofu](https://github.com/sakanafuto)
+
+## References
 
 ### Generalor
 
