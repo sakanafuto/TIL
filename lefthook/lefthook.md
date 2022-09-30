@@ -10,7 +10,7 @@ $ brew install lefthook
 
 pubspec.ymlと同じディレクトリにlefthook.ymlというファイルを作成し次のように編集します。
 
-```yaml
+```yaml 
 # lefthook.yaml
 
 pre-commit:
