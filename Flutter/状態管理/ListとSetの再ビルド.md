@@ -1,4 +1,4 @@
-# List / Set の値を更新してもref.watchで再ビルドされない
+# List / Set の値を更新しても ref.watch で再ビルドされない
 
 ```dart
 final polygonSetProvider = StateProvider<Set<Polygon>>((ref) => {});
@@ -18,4 +18,5 @@ ref.read(polygonSetProvider.state).state = {...polygonSet};
 ```
 
 ## 参考
+
 - https://zenn.dev/shu_illy/articles/d43e842ea9ad4e

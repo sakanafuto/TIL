@@ -1,7 +1,7 @@
 # Material Theme Builder
 
 すごいプラグイン。
-PrimaryColorを適当に設定するとマテリアルデザインをいい感じに提案してくれる。
-Flutterもマテリアルデザインを採用してるから相性バツグン。
+PrimaryColor を適当に設定するとマテリアルデザインをいい感じに提案してくれる。
+Flutter もマテリアルデザインを採用してるから相性バツグン。
 
 ![](../assets/material.png)

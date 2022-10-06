@@ -1,10 +1,10 @@
-# Flutter用設定
+# Flutter 用設定
 
 ```yaml
 pre-commit:
   parallel: false
   commands:
-    linter: 
+    linter:
       run: dart fix --apply lib && git add {staged_files}
     sort-imports:
       glob: "*.dart"

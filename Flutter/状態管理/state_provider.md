@@ -1,6 +1,6 @@
 # StateProvider
 
-StateProviderはプロバイダの値を取得する以外に、外部からプロバイダのステート（値）の変更が可能。
+StateProvider はプロバイダの値を取得する以外に、外部からプロバイダのステート（値）の変更が可能。
 `count++`レベル以上の値の変更をする場合、`StateNotifierWidget`を使ったほうがいい見たい。
 
 ```dart
@@ -28,6 +28,7 @@ ref.watch(counterProvider.notifier).state = 値;
 ```
 
 ## 参考
+
 - [StateProvider](https://riverpod.dev/ja/docs/providers/state_provider/)
-- [【Flutter×Riverpod】StateProviderの使い方｜プロバイダで状態管理](https://flutternyumon.com/riverpod-how-to-use-stateprovider/)
+- [【Flutter×Riverpod】StateProvider の使い方｜プロバイダで状態管理](https://flutternyumon.com/riverpod-how-to-use-stateprovider/)
 - [【Flutter】Riverpod 入門](https://zenn.dev/naoya_maeda/articles/a8bbf40a202c74)
