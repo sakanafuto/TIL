@@ -14,7 +14,7 @@ pubspec.yml と同じディレクトリに lefthook.yml というファイルを
 # lefthook.yaml
 
 pre-commit:
-  parallel: false
+  parallel: true
   commands:
     linter:
       run: dart fix --apply lib && git add {staged_files}
