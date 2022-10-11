@@ -15,7 +15,7 @@
 
 ```shell
 # ファイル名は . で始まっていればいい
-$ vi .git_commit_template 
+$ vi .git_commit_template
 ```
 
 `$ git commit`時に表示される内容を記述する。
@@ -69,5 +69,5 @@ $ git commit
 
 ## References
 
-- [Git commit templateを使用する](https://qiita.com/usuket/items/7fc3274474205d4715fb)
-- [[備忘録]vimをgitのエディタのdefault設定に](https://qiita.com/Syunto07ka/items/f87c9a82dfacf1472ee5)
+- [Git commit template を使用する](https://qiita.com/usuket/items/7fc3274474205d4715fb)
+- [[備忘録]vim を git のエディタの default 設定に](https://qiita.com/Syunto07ka/items/f87c9a82dfacf1472ee5)

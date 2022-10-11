@@ -1,6 +1,6 @@
 # Riverpod + GoRouter
 
-`Initial Route`と`LoginPage`へのRoutだけの場合。
+`Initial Route`と`LoginPage`への Rout だけの場合。
 
 ```dart
 final loginInfo = LoginInfo();
@@ -50,9 +50,9 @@ redirect: (state) {
 refreshListenable: loginInfo,
 ```
 
-sublocが`/login`の場合に`Initial Route`へredirectさせている。
+subloc が`/login`の場合に`Initial Route`へ redirect させている。
 `LoginPage`で何かしらのログイン処理を行い、`LoginInfo`の値が更新されると、`refreshListenable`に`LoginInfo`を渡しているため`redirect関数`が呼ばれる。
-`LoginPage`でログイン処理を行なっており、`/login`にいる状態で`redirect関数`が呼ばれるため、sublocが`/login`となります。
+`LoginPage`でログイン処理を行なっており、`/login`にいる状態で`redirect関数`が呼ばれるため、subloc が`/login`となります。
 
 これで`LoginInfo`が変更された際に、自動的に遷移させることができるようになる。
 
@@ -76,7 +76,7 @@ final routerProvider = Provider(
       if (!isLoggedIn) {
         return state.subloc == '/login' ? null : '/login';
       }
-    
+
       return null;
     },
     refreshListenable: ref.watch(loginInfoProvider),
@@ -99,13 +99,13 @@ Widget build(BuildContext context, WidgetRef ref) {
 これで、`GoRouter`内でも`riverpod`を使用した`Provider`などの値を使用できるようになる。
 
 ## TODO（続きまとめる）
-- StateNotifierProviderの場合、`refreshListenable`が使えない
+
+- StateNotifierProvider の場合、`refreshListenable`が使えない
 - 強制リダイレクト直前の目的の画面に遷移させる
 
-
-
 ## 参考
-- [riverpod + go_routerの備忘録](https://zenn.dev/mkikuchi/articles/cc87c84e1404c4)
+
+- [riverpod + go_router の備忘録](https://zenn.dev/mkikuchi/articles/cc87c84e1404c4)
 - [Umigishi-Aoi/go_router_sample](https://github.com/Umigishi-Aoi/go_router_sample/blob/master/go_router_sample/lib/main.dart)
-- [【Flutter】go_routerでBottomNavigationBarの永続化に挑戦する](https://zenn.dev/heyhey1028/articles/d64564e6fd1df4)
+- [【Flutter】go_router で BottomNavigationBar の永続化に挑戦する](https://zenn.dev/heyhey1028/articles/d64564e6fd1df4)
 - [【Flutter】Riverpod 入門](https://zenn.dev/naoya_maeda/articles/a8bbf40a202c74)

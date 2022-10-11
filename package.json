@@ -1,0 +1,24 @@
+{
+  "name": "til",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sakanafuto/TIL.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sakanafuto/TIL/issues"
+  },
+  "homepage": "https://github.com/sakanafuto/TIL#readme",
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}

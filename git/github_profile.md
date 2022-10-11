@@ -15,6 +15,6 @@
 
 ### Article
 
-- [おしゃれなREADME.mdを作って「このプロダクト凄そう..!(?)」と勘違いさせたいあなたへ](https://zenn.dev/nixieminton/articles/692f3b0c4cc337)
+- [おしゃれな README.md を作って「このプロダクト凄そう..!(?)」と勘違いさせたいあなたへ](https://zenn.dev/nixieminton/articles/692f3b0c4cc337)
 - [GitHub の Profile ページを GitHub Actions と zx で更新し、Zenn 記事一覧や小倉百人一首などを埋め込む](https://zenn.dev/hankei6km/articles/automatically-update-github-profile)
-- [GitHubの (プロフィール・リポジトリ) READMEをいい感じに出来るサービスを集める](https://zenn.dev/nekocodex/scraps/1b028a54a32115)
+- [GitHub の (プロフィール・リポジトリ) README をいい感じに出来るサービスを集める](https://zenn.dev/nekocodex/scraps/1b028a54a32115)

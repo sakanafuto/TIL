@@ -1,49 +1,49 @@
 > [こちらの記事](https://zenn.dev/10_tofu_01/articles/flutter_formatter_linter_lefthook)を御覧ください。
 
-# 【Flutter】LinterとFormatter、そしてLefthook
+# 【Flutter】Linter と Formatter、そして Lefthook
 
 # はじめに
 
-**インデントを揃えただけのムダなコミット**が増えてきて、プルリクやコミット履歴に関係ないファイルが多くなり「これはいかん」となったので、FlutterにおけるFormatterやLinterについて調べてみました。
+**インデントを揃えただけのムダなコミット**が増えてきて、プルリクやコミット履歴に関係ないファイルが多くなり「これはいかん」となったので、Flutter における Formatter や Linter について調べてみました。
 
-FormatterやLinterを調べてたら、なんとその自動化の方法やちょっとした便利なパッケージを見つけましたのでそちらもご紹介いたします。
+Formatter や Linter を調べてたら、なんとその自動化の方法やちょっとした便利なパッケージを見つけましたのでそちらもご紹介いたします。
 
-この記事で紹介したことを導入すると、**コードの整形や解析が自動で行われ**、**正しい書き方や文法が身につき**、**import文が見やすく**なります（最後のはおまけ）。
+この記事で紹介したことを導入すると、**コードの整形や解析が自動で行われ**、**正しい書き方や文法が身につき**、**import 文が見やすく**なります（最後のはおまけ）。
 
 ### 個人的結論
 
-- FormatterはDart標準搭載のもので充分（$ dart format）
-- 静的解析は有名な設定をincludeした上でプロジェクトに沿った設定をする
-- Lefthookを導入して$ git commit時にこれらが走るようにする
+- Formatter は Dart 標準搭載のもので充分（$ dart format）
+- 静的解析は有名な設定を include した上でプロジェクトに沿った設定をする
+- Lefthook を導入して$ git commit 時にこれらが走るようにする
 
 静的解析は制約が強めな[pedantic_mono](https://github.com/mono0926/pedantic_mono/blob/main/example/analysis_options.yaml)を導入させていただいています。
 
-## FlutterにおけるFormatter / Linter
+## Flutter における Formatter / Linter
 
-文法やスタイルの問題をチェックするLinter、コードをよしなに整形してくれるFormatterは多種多様な言語で利用されています。
+文法やスタイルの問題をチェックする Linter、コードをよしなに整形してくれる Formatter は多種多様な言語で利用されています。
 
-Dart / Flutterにおいては、FormatterとLinter（静的解析ツール）の両者ともにDartに標準搭載されています。コマンドでいうと$ dart formatや$ dart analyzeなど。
+Dart / Flutter においては、Formatter と Linter（静的解析ツール）の両者ともに Dart に標準搭載されています。コマンドでいうと$ dart format や$ dart analyze など。
 
-これらはVS CodeやAndroid Studioを使う際にまず導入するであろうFlutter / Dartプラグインに含まれていますので、エディタのコマンドや問題パネルなどで知らずのうちに使っているかもしれません。
+これらは VS Code や Android Studio を使う際にまず導入するであろう Flutter / Dart プラグインに含まれていますので、エディタのコマンドや問題パネルなどで知らずのうちに使っているかもしれません。
 
-[!VS CodeのFlutterプラグイン](https://storage.googleapis.com/zenn-user-upload/768e1d6f0639-20220920.png =250x)
-*VS Code用のプラグイン*
+[!VS Code の Flutter プラグイン](https://storage.googleapis.com/zenn-user-upload/768e1d6f0639-20220920.png =250x)
+_VS Code 用のプラグイン_
 
 ![!Android StudioのDartプラグイン](https://storage.googleapis.com/zenn-user-upload/f28696bd2fad-20220920.png =250x)
-*Android Studio用のプラグイン*
+_Android Studio 用のプラグイン_
 
-FormatterはDartチームが推奨するコーディングスタイルに則っていれば問題ないと思いますが、Linterに関しては標準搭載のものは制限が結構ゆるいです（`const`つけるべき箇所でもとくに何も指摘されなかったり）。標準で厳しすぎても初心者に優しくなく、面白くないという配慮からでしょうか？
+Formatter は Dart チームが推奨するコーディングスタイルに則っていれば問題ないと思いますが、Linter に関しては標準搭載のものは制限が結構ゆるいです（`const`つけるべき箇所でもとくに何も指摘されなかったり）。標準で厳しすぎても初心者に優しくなく、面白くないという配慮からでしょうか？
 
-なんにせよ、Linterに関してはコードの堅牢性やパフォーマンスを高めるためにも、多少指摘が煩わしくても厳しめなルールを定めた方がいいと私は思います。
+なんにせよ、Linter に関してはコードの堅牢性やパフォーマンスを高めるためにも、多少指摘が煩わしくても厳しめなルールを定めた方がいいと私は思います。
 
 ## Formatter
 
-コードのフォーマットは先述の通りDartに標準搭載されているもので充分です。
+コードのフォーマットは先述の通り Dart に標準搭載されているもので充分です。
 
 `$ dart format [ファイル]`, `$ dart format lib`とコマンドを叩くだけですぐにコードを整形してくれます。
 
-またVS Codeであれば`⌘ + P`でコマンドパレットを開き、`Format Document`から実行できます。
-こちらもVS Codeの紹介のみで恐縮ですが、設定ファイルに次のような項目を追記することでファイル保存時やペースト時に実行するよう設定できます。Android Studioにも似たような設定は可能かと思います。
+また VS Code であれば`⌘ + P`でコマンドパレットを開き、`Format Document`から実行できます。
+こちらも VS Code の紹介のみで恐縮ですが、設定ファイルに次のような項目を追記することでファイル保存時やペースト時に実行するよう設定できます。Android Studio にも似たような設定は可能かと思います。
 
 ```json
 "editor.formatOnSave": true,
@@ -57,13 +57,14 @@ FormatterはDartチームが推奨するコーディングスタイルに則っ�
 
 こちらもプラグインを導入することで各種エディタから実行可能です。
 
-修正可能なものとはたとえば、不要なimport文の削除やtype annotationを付け足すとかです。能動的に、複雑なコードの改変が必要になる場合等は自動修正はしてくれませんので注意しましょう。
+修正可能なものとはたとえば、不要な import 文の削除や type annotation を付け足すとかです。能動的に、複雑なコードの改変が必要になる場合等は自動修正はしてくれませんので注意しましょう。
 
 さてこの『一定のルール』ですが、プロジェクトのルートディレクトリに`analysis_options.yaml`というファイルを追加することでカスタマイズできます。
 
 公式の[flutter/flutter](https://github.com/flutter/flutter/blob/master/analysis_options.yaml)プロジェクトでも例がありますね。
 
-:::details flutter/flutterのanalysis_options.yaml
+:::details flutter/flutter の analysis_options.yaml
+
 ```dart
 # Specify analysis options.
 #
@@ -308,35 +309,39 @@ linter:
     - valid_regexps
     - void_checks
 ```
+
 :::
 
-どういった一貫性を持てばいいのか、どういった形式に沿って書けばいいのかということに関しては以下が参考になるかもしれません。とくに、Effective DartはDartを扱う開発者にとって必読と思います。
+どういった一貫性を持てばいいのか、どういった形式に沿って書けばいいのかということに関しては以下が参考になるかもしれません。とくに、Effective Dart は Dart を扱う開発者にとって必読と思います。
 
 - [**Effective Dart**](https://dart.dev/guides/language/effective-dart)
 - [Linter for Dart](https://dart-lang.github.io/linter/lints/)
 
-### analysis_options.yamlの書き方
+### analysis_options.yaml の書き方
 
-Dartの静的解析はAnalyzerとLinterから構成されます。
+Dart の静的解析は Analyzer と Linter から構成されます。
 
 - Analyzer: コードに言語仕様で指定されているエラーや警告などのバグがないかを解析する。
 - Linter: コードがスタイルガイドラインに準拠しているかを解析する。
 
-この2つに加えて、`include: [パッケージ]`と書くことでパッケージの設定項目を利用できます。
-もちろんincludeした設定項目を上書きしたり一部を除外したりすることも可能です。
+この 2 つに加えて、`include: [パッケージ]`と書くことでパッケージの設定項目を利用できます。
+もちろん include した設定項目を上書きしたり一部を除外したりすることも可能です。
 
-1つ1つ設定するよりも、有名なパッケージをincludeして必要に応じて追記する方針でいいと思います。以下は選択肢になりそうなパッケージです。
+1 つ 1 つ設定するよりも、有名なパッケージを include して必要に応じて追記する方針でいいと思います。以下は選択肢になりそうなパッケージです。
 
 厳しめな設定のパッケージ
+
 - [pedantic_mono](https://github.com/mono0926/pedantic_mono/blob/main/example/analysis_options.yaml)（作者さまによる記事: [Dart/Flutter の静的解析強化のススメ](https://medium.com/flutter-jp/analysis-b8dbb19d3978)）
 
-Dartチーム推奨のパッケージ
+Dart チーム推奨のパッケージ
+
 - [lint](https://pub.dev/packages/lint)
 
-Flutterチーム推奨のパッケージ（旧`pedantic`、Flutter 2.5から標準搭載！）
+Flutter チーム推奨のパッケージ（旧`pedantic`、Flutter 2.5 から標準搭載！）
+
 - [flutter_lints](https://pub.dev/packages/flutter_lints)
 
-今の所linterのルールは追記していませんが、analyzerにFreezedなどの自動生成系のファイルを除外設定しています。これらのファイルは編集しませんし、変に改変されても嫌なので。
+今の所 linter のルールは追記していませんが、analyzer に Freezed などの自動生成系のファイルを除外設定しています。これらのファイルは編集しませんし、変に改変されても嫌なので。
 
 私の`analysis_options.yaml`はこんな感じです。
 
@@ -368,8 +373,8 @@ analyzer:
   strong-mode:
     # 暗黙的な型変換を禁止する
     implicit-casts: false
-  
-  errors: 
+
+  errors:
     # 何らかのルールのレベルを変更できる
     # 下記は unused_import の各レベルにおける VS Code 上の挙動
     unused_import: info     # 画像1
@@ -384,15 +389,14 @@ linter:
 
 :::details 設定した重要度ごとの結果
 ![画像1. "info" Linterルールはデフォルトでこちらです](https://storage.googleapis.com/zenn-user-upload/9f4e3b496c1f-20220920.png 250x)
-*画像1. "info" Linterルールはデフォルトでこちらです*
+_画像 1. "info" Linter ルールはデフォルトでこちらです_
 
 ![画像2. "warning"](https://storage.googleapis.com/zenn-user-upload/bf89dc0afc04-20220920.png 250x)
-*画像2. "warning"*
+_画像 2. "warning"_
 
 ![画像3. "error" こちらはビルドすらできなくなります](https://storage.googleapis.com/zenn-user-upload/290602aaecb5-20220920.png 250x)
-*画像3. "error" こちらはビルドすらできなくなります*
+_画像 3. "error" こちらはビルドすらできなくなります_
 :::
-
 
 ![](https://storage.googleapis.com/zenn-user-upload/422e65ca546b-20220920.png)
 
@@ -401,6 +405,7 @@ linter:
 ![](https://storage.googleapis.com/zenn-user-upload/433b5b61262d-20220920.png)
 
 ## 参考
+
 - [Dart/Flutter の静的解析強化のススメ](https://medium.com/flutter-jp/analysis-b8dbb19d3978)
 - [Flutter でのフォーマットと静的解析（Linting）の使い方](https://zenn.dev/riemonyamada/articles/f1ca080007d40a#%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88)
 - [Effective Dart](https://dart.dev/guides/language/effective-dart)

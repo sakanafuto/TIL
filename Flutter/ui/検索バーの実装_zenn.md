@@ -1,6 +1,6 @@
 # はじめに
 
-AppBarをカスタマイズしてみました。
+AppBar をカスタマイズしてみました。
 以下の完成品を作る手順を解説します。
 
 ![](https://storage.googleapis.com/zenn-user-upload/7b75249e0092-20220806.gif)
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
 
 `Scaffold`中の`appBar`で、カスタマイズする`SearchBar`を生成しています。
 
-## AppBarのカスタマイズ
+## AppBar のカスタマイズ
 
 `appBar`クラスは`PreferredSizeWidget`で宣言されているので、カスタマイズする際も`PreferredSizeWidget`実装する必要があります。
 

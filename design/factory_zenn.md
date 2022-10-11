@@ -45,12 +45,12 @@ class Drink{
   int ammount;
   Drink(this.ammount);
 
-  factory Drink.createDrink({required int ammount, bool breakTime = false}) 
+  factory Drink.createDrink({required int ammount, bool breakTime = false})
       => breakTime ? Coffee(ammount) : Water(ammount);
 }
 
 void main() {
-  Drink myBreakDrink = Drink.createDrink(ammount: 200, breakTime: true);  
+  Drink myBreakDrink = Drink.createDrink(ammount: 200, breakTime: true);
   // Instance of 'Coffee'
 
   Drink mySportDrink = Drink.createDrink(ammount: 500);
@@ -66,13 +66,13 @@ void main() {
 
 > 新たに生成されたオブジェクトは、共通のインターフェイスを使って参照する。
 
-Coffee（or Water）のインスタンスをDrink型で返しているのであって、Coffee（or Water）として返しているわけではありません。親クラスは両方のサブクラスと互換性があるため、ここでは共通のインターフェイスとなっています。
+Coffee（or Water）のインスタンスを Drink 型で返しているのであって、Coffee（or Water）として返しているわけではありません。親クラスは両方のサブクラスと互換性があるため、ここでは共通のインターフェイスとなっています。
 
-## Named Constructorとの違い
+## Named Constructor との違い
 
 `Named Constructor`とはその名の通り名前の付いたコンストラクタです。
 
-JavaやC++では引数が異なる限り、複数のコンストラクタを持つクラスを書くことができます（オーバーロード）。Dartにはそのような機能はなく、明示的に名前をつけたコンストラクタを定義する必要があります。
+Java や C++では引数が異なる限り、複数のコンストラクタを持つクラスを書くことができます（オーバーロード）。Dart にはそのような機能はなく、明示的に名前をつけたコンストラクタを定義する必要があります。
 
 ```dart
 class Drink {
@@ -91,7 +91,7 @@ class Drink {
 }
 ```
 
-`Named Constructor`の場合、役割がより明確になり読みやすくなります（fromJson()であればJsonからインスタンスを作成しているんだなと推測できる）。
+`Named Constructor`の場合、役割がより明確になり読みやすくなります（fromJson()であれば Json からインスタンスを作成しているんだなと推測できる）。
 
 両者の違いは以下の通りで、必要に応じて使い分ければよさげですね。
 
@@ -100,7 +100,7 @@ class Drink {
 - `Named Constructor`は任意のメンバ変数およびメソッドにアクセスできます。
 - `Factory Constructor`は静的なので、このキーワードにアクセスすることはできません。
 
-**returnの有無**
+**return の有無**
 
 - `Named Constructor`は通常のコンストラクタと同様に動作し、明示的にインスタンスを返す必要はありません。
 - `Factory Constructor`は明示的にインスタンスを返す必要があります。

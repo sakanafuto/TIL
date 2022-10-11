@@ -10,7 +10,7 @@ protocol ButtonDelegate {
 
 class Button {
     var delegate: ButtonDelegate? = nil
-    
+
     func click() {
         print("pushed")
         if let dg = self.delegate {
@@ -65,7 +65,6 @@ background2
 
 ## 参考
 
-- [SwiftにおけるDelegateとは何か、なぜ使うのか](https://qiita.com/st43/items/9f9990d76cefa1909ef4)
+- [Swift における Delegate とは何か、なぜ使うのか](https://qiita.com/st43/items/9f9990d76cefa1909ef4)
 - [プロトコルとデリゲートのとても簡単なサンプルについて](https://qiita.com/mochizukikotaro/items/a5bc60d92aa2d6fe52ca)
-- [【Swift入門】難解なデリゲート(delegate)の使い方を理解しよう！](https://www.sejuku.net/blog/33867)
-
+- [【Swift 入門】難解なデリゲート(delegate)の使い方を理解しよう！](https://www.sejuku.net/blog/33867)

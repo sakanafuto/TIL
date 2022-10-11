@@ -1,0 +1,5 @@
+pre-commit:
+  parallel: true
+  commands:
+    prettier:
+      run: npm run prettier && git add {staged_files}

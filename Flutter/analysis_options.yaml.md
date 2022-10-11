@@ -1,6 +1,6 @@
 # オススメ設定
 
-Linterはきつくしよう！
+Linter はきつくしよう！
 
 ```yaml
 # mono0926 / pedantic_mono: https://github.com/mono0926/pedantic_mono
@@ -15,7 +15,7 @@ analyzer:
     - lib/**/*.freezed.dart
     - lib/**/dio_headerfixed_adapter.dart
 
-  errors: 
+  errors:
     # import_sorter の設定を優先するため除外
     directives_ordering: ignore
 

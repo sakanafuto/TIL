@@ -1,33 +1,34 @@
-サンプルを用いて、タイトルの通り別のWidgetでコールバック関数を呼び出しています。
+サンプルを用いて、タイトルの通り別の Widget でコールバック関数を呼び出しています。
 おまけでコールバック関数について少し触れています。
 
 :::message
+
 - コードを読みやすくするために一部省略しています。
-- 勉強中のコードになります。もっと良い書き方があればコメントください🙇‍♂️
-:::
+- 勉強中のコードになります。もっと良い書き方があればコメントください 🙇‍♂️
+  :::
 
 ---
 
 # 寿司屋
 
-``SushiShop``という``StatefulWidget``内で個別の``SushiWidget``をいくつも表示させたいとします。
-また寿司は作ったり食べたりできるので、``makeSushi``と``eatSushi``という関数も用意したいです。
+`SushiShop`という`StatefulWidget`内で個別の`SushiWidget`をいくつも表示させたいとします。
+また寿司は作ったり食べたりできるので、`makeSushi`と`eatSushi`という関数も用意したいです。
 
-``makeSushi``は新しく寿司を作り一覧に追加し、``eatSushi``は選んだ（タップした）寿司を消す挙動にします。
+`makeSushi`は新しく寿司を作り一覧に追加し、`eatSushi`は選んだ（タップした）寿司を消す挙動にします。
 
-``SushiWidget``を一覧化するのはかんたんで、``SushiShop``内のビルドの通り``Widget``の``children``としてリストを渡してあげればよいです。リスト内のオブジェクトの型は``Sushiクラス``として、インスタンスを格納します。
+`SushiWidget`を一覧化するのはかんたんで、`SushiShop`内のビルドの通り`Widget`の`children`としてリストを渡してあげればよいです。リスト内のオブジェクトの型は`Sushiクラス`として、インスタンスを格納します。
 
-``Sushiクラス``のプロパティには、ネタとして``neta``（サンプルコードは"鮪"確定ですが…）と、あとはどの寿司を食べたか識別するためのidを持っています。
+`Sushiクラス`のプロパティには、ネタとして`neta`（サンプルコードは"鮪"確定ですが…）と、あとはどの寿司を食べたか識別するための id を持っています。
 
-``SushiShop``内で寿司をつくる``makeSushi``関数を作成し、``id``と``neta``を初期化します。あとは寿司を食べる``eatSushi``関数を…とここで問題がでてきます。
+`SushiShop`内で寿司をつくる`makeSushi`関数を作成し、`id`と`neta`を初期化します。あとは寿司を食べる`eatSushi`関数を…とここで問題がでてきます。
 
-``void eatSushi(int netaId) {sushiList.removeAt(netaId);}``で一見よさそうにみえますが、``eatSushi``を発動させるのは寿司がタップされたとき、すなわち``SushiShop``クラスとは違う``Sushiクラス``のウィジェット（``TextButton``）がタップされたときになります。
+`void eatSushi(int netaId) {sushiList.removeAt(netaId);}`で一見よさそうにみえますが、`eatSushi`を発動させるのは寿司がタップされたとき、すなわち`SushiShop`クラスとは違う`Sushiクラス`のウィジェット（`TextButton`）がタップされたときになります。
 
-そのため``SushiWidget``内で``onPressed: _eatSushi()``みたいなことはできないんです。
+そのため`SushiWidget`内で`onPressed: _eatSushi()`みたいなことはできないんです。
 
-これを解決するために、``Sushiクラス``では``Function(int) sushiCallback（引数にint型を必要とする関数）``をプロバティとして持たせています。
+これを解決するために、`Sushiクラス`では`Function(int) sushiCallback（引数にint型を必要とする関数）`をプロバティとして持たせています。
 
-寿司自身がタップされたときには``onPressed: () => sushiCallback(id)``として``id（＝識別するためのもの）``を引数に渡してあげることで、``SushiShop``でどの寿司がタップされたのかを判断することができるのです。
+寿司自身がタップされたときには`onPressed: () => sushiCallback(id)`として`id（＝識別するためのもの）`を引数に渡してあげることで、`SushiShop`でどの寿司がタップされたのかを判断することができるのです。
 
 ```dart:sample.dart
 class SushiShop extends StatefulWidget {
@@ -105,13 +106,13 @@ class Sushi extends StatelessWidget {
 
 ```
 
-寿司を並べるくらいなら``Text``とかを羅列すれば良かったのですが、任意にタップした寿司を消すという動的な仕様を実装しようと思ったらここまでややこしくなりました。
+寿司を並べるくらいなら`Text`とかを羅列すれば良かったのですが、任意にタップした寿司を消すという動的な仕様を実装しようと思ったらここまでややこしくなりました。
 
-※``sushiCounter``のインクリメントなどはもうちょっといじらないとうまく動作しません。
+※`sushiCounter`のインクリメントなどはもうちょっといじらないとうまく動作しません。
 
 ## おまけ
 
-寿司クラスも、JSでかんたんにまとめると少しわかりやすいように思えます。
+寿司クラスも、JS でかんたんにまとめると少しわかりやすいように思えます。
 
 ```javascript:sample.js
 // 寿司関数を定義（高階関数）
@@ -148,6 +149,7 @@ function sushi(id, neta, func) {
 
 sushi(1, "サーモン", (id) => {...});
 ```
+
 サンプルコードのこれも
 
 ```dart:sample.dart
@@ -186,7 +188,7 @@ void _eatSushi(int netaId) {
 Sushi sushi = Sushi(_sushiCounter, "鮪", (sushiId) => _eatSushi(sushiId));
 ```
 
-``Widget``で見かけるコロンや名前付き引数の波括弧がいい感じにややこしくしてますね…。
+`Widget`で見かけるコロンや名前付き引数の波括弧がいい感じにややこしくしてますね…。
 
 書き方や考え方にいろいろと甘い部分はあると思います。
-``Flutter``は楽しいのでもっと勉強してパワーアップしたいです🦋
+`Flutter`は楽しいのでもっと勉強してパワーアップしたいです 🦋

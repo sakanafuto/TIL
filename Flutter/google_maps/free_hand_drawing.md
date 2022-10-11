@@ -1,15 +1,16 @@
-# 【Flutter】Riverpod / Google Mapsでマップをなぞる
+# 【Flutter】Riverpod / Google Maps でマップをなぞる
 
 # はじめに
 
-flutter上でGoogleマップを表示させ、なぞった範囲内を塗りつぶす機能を実装してみました。
+flutter 上で Google マップを表示させ、なぞった範囲内を塗りつぶす機能を実装してみました。
 
 ![](https://storage.googleapis.com/zenn-user-upload/875851d3b361-20220820.gif)
 
 実装方法は[こちら](https://medium.com/@shadyboshra2012/flutter-free-hand-polygon-drawing-on-google-maps-796e8bd47e85)の記事を参考にさせていただきました。`Dart`のバージョンが古く`Null Safety`に対応しておらず、また状態管理にライブラリを用いていなかったため、そのあたりを本記事でアレンジしております。
 
 ## バージョン
-```bash 
+
+```bash
 ❯ fvm flutter --version
 
 Flutter 3.0.1 • channel stable • https://github.com/flutter/flutter.git
@@ -32,26 +33,27 @@ geolocator: ^9.0.1 // 現在地情報を取得する
 
 実装当初、知らなくて戸惑った単語たち…
 
-| 用語 | 説明 | 本記事における扱い |
-| ---- | ---- | ---- |
-| LatLng | 緯度経度のこと | PolylineとPolygonを構成する要素で、この座標の集まりで描画を表現する |
-| Polyline | マップ上に線を描くためのもの | なぞっている間、線が動的に指についてくる動作を描画するのに用いる |
-| Polygon | マップ上に座標で囲まれた領域を多角形で表すもの | なぞり終えて、指が離れた際に多角形を描画するのに用いる |
+| 用語     | 説明                                           | 本記事における扱い                                                     |
+| -------- | ---------------------------------------------- | ---------------------------------------------------------------------- |
+| LatLng   | 緯度経度のこと                                 | Polyline と Polygon を構成する要素で、この座標の集まりで描画を表現する |
+| Polyline | マップ上に線を描くためのもの                   | なぞっている間、線が動的に指についてくる動作を描画するのに用いる       |
+| Polygon  | マップ上に座標で囲まれた領域を多角形で表すもの | なぞり終えて、指が離れた際に多角形を描画するのに用いる                 |
 
 # 事前準備
 
-[google_maps_flutter](https://pub.dev/packages/google_maps_flutter)などを参考に、Google Maps APIと表示させたいプラットフォームとを連携します。これをしないとマップが表示されません。
+[google_maps_flutter](https://pub.dev/packages/google_maps_flutter)などを参考に、Google Maps API と表示させたいプラットフォームとを連携します。これをしないとマップが表示されません。
 
-また本記事では解説しませんが、APIキーを直接書かないように`flutter_config`を用いました。
-環境変数をDartだけでなくiOSやAndroidのコードに公開できる便利なライブラリです。
+また本記事では解説しませんが、API キーを直接書かないように`flutter_config`を用いました。
+環境変数を Dart だけでなく iOS や Android のコードに公開できる便利なライブラリです。
 
-今回はiOSとAndroidで実装したかったので、このあたりのファイルを編集しました。
+今回は iOS と Android で実装したかったので、このあたりのファイルを編集しました。
+
 - `/ios/Runner/Info.plist`
 - `/ios/Runner/AppDelegate.swift`
 - `/android/app/src/main/AndroidManifest.xml`
 - `/android/app/build.gradle`
 
-参考： [AndroidManifest.xml、AppDelegate.swiftからenvにアクセス](https://zenn.dev/taitai9847/articles/0be7298408b7c8)
+参考： [AndroidManifest.xml、AppDelegate.swift から env にアクセス](https://zenn.dev/taitai9847/articles/0be7298408b7c8)
 
 # 実装
 
@@ -83,9 +85,9 @@ Widget build(BuildContext context) {
     ...
 ```
 
-`GestureDetecter`（childに対してドラッグ操作やピンチ操作などを付与する）のchildに`GoogleMap`というWidgetを指定しています。
+`GestureDetecter`（child に対してドラッグ操作やピンチ操作などを付与する）の child に`GoogleMap`という Widget を指定しています。
 
-`GoogleMap`ウィジェットのみだと、普段私たちが使っているGoogle Mapsアプリのような拡大縮小やマップ移動の操作しかできません。これをなぞれるようにするため、`FloatingActionButton`に『マップ操作』と『なぞる操作』を切り替える機能を実装しています。
+`GoogleMap`ウィジェットのみだと、普段私たちが使っている Google Maps アプリのような拡大縮小やマップ移動の操作しかできません。これをなぞれるようにするため、`FloatingActionButton`に『マップ操作』と『なぞる操作』を切り替える機能を実装しています。
 
 `GestureDetector`のプロパティとして`onPanUpdate`と`onPanEnd`を定義しています。どちらも『なぞる』状態ではたらく関数を定義していて、中身は後述します。
 
@@ -94,11 +96,11 @@ Widget build(BuildContext context) {
 
 `GoogleMap`のプロパティには`polylines`と`polygons`があり、`Polyline / Polygon`のインスタンスを`value`とするハッシュセットを指定することでマップ上に線分や図形を表示できます。
 
-## _onPanUpdate
+## \_onPanUpdate
 
 つづいて`_onPanUpdate`関数の中身です。
 
-コメントにそれぞれの解説が書いてあるとおりですが、こちらの関数の役割は”触った部分の座標をもとにPolylineインスタンスを生成し、_polylineSetに追加する”です。
+コメントにそれぞれの解説が書いてあるとおりですが、こちらの関数の役割は”触った部分の座標をもとに Polyline インスタンスを生成し、\_polylineSet に追加する”です。
 
 ```dart
 _onPanUpdate(DragUpdateDetails details) async {
@@ -169,11 +171,12 @@ _onPanUpdate(DragUpdateDetails details) async {
   }
 }
 ```
-## _onPanEnd
+
+## \_onPanEnd
 
 つづいて`_onPanEnd`関数の中身です。
 
-こちらの関数の役割は”なぞり終えた際にPolygonインスタンスを生成し、_polygonSetに追加する。”です。
+こちらの関数の役割は”なぞり終えた際に Polygon インスタンスを生成し、\_polygonSet に追加する。”です。
 
 ```dart
 onPanEnd(DragEndDetails details) async {
@@ -200,7 +203,7 @@ onPanEnd(DragEndDetails details) async {
 }
 ```
 
-## _toggleDrawing / _clearPolygons
+## \_toggleDrawing / \_clearPolygons
 
 `_toggleDrawing`と`_clearPolygons`です。
 
@@ -219,7 +222,7 @@ _clearPolygons() {
 }
 ```
 
-## _determinePosition
+## \_determinePosition
 
 デバイスの位置情報周りの確認を行い、現在地を返す関数です。
 『なぞる』が目的であればこちらはオプションになります。
@@ -258,11 +261,12 @@ Future<Position> _determinePosition() async {
 ```
 
 これにより位置情報サービスを許可するか確認した上で、現在地を取得できるようになります。
-`GoogleMap`ウィジェットにおいて`myLocationButtonEnabled: true`（デフォルトでtrue）とすることでマップにボタンが表示され、押下することで現在地まで移動してくれます。
+`GoogleMap`ウィジェットにおいて`myLocationButtonEnabled: true`（デフォルトで true）とすることでマップにボタンが表示され、押下することで現在地まで移動してくれます。
 
 ![](https://storage.googleapis.com/zenn-user-upload/e06163b302db-20220822.gif)
 
 # まとめ
+
 コードの全体像です。
 
 ```dart
@@ -465,17 +469,21 @@ class MyAppState extends ConsumerState<MyApp> {
 ```
 
 現在`Riverpod`を勉強中でして、急ごしらえで`StateProvider`で実装したものになります。
-もっといい方法がありましたらコメントいただけますと幸いです🙇‍♂️
+もっといい方法がありましたらコメントいただけますと幸いです 🙇‍♂️
 
 # 参考
+
 **なぞる**
+
 - [Flutter —Free Hand Polygon Drawing on Google Maps](https://medium.com/@shadyboshra2012/flutter-free-hand-polygon-drawing-on-google-maps-796e8bd47e85)（[GitHub](https://github.com/ShadyBoshra2012/free_hand_polygon_drawing_map/blob/master/lib/main.dart)）
 - [Google Maps Flutter: Marker, circle and polygon.](https://medium.com/@zeh.henrique92/google-maps-flutter-marker-circle-and-polygon-c71f4ea64498)（[GitHub](https://gist.github.com/josehenriqueroveda/a7be466fa6ae06e526ee29cf02db7676)）
-- [【Flutter】GestureDetectorを使って、スワイプしたときの位置を取得する](https://note.com/hatchoutschool/n/n4f70764cc83b)
+- [【Flutter】GestureDetector を使って、スワイプしたときの位置を取得する](https://note.com/hatchoutschool/n/n4f70764cc83b)
 
 **flutter_config**
-- [AndroidManifest.xml、AppDelegate.swiftからenvにアクセス](https://zenn.dev/taitai9847/articles/0be7298408b7c8)
+
+- [AndroidManifest.xml、AppDelegate.swift から env にアクセス](https://zenn.dev/taitai9847/articles/0be7298408b7c8)
 
 **geolocator**
+
 - [【Flutter】スマホの位置情報を取得するやり方](https://zenn.dev/namioto/articles/3abb0ccf8d8fb6)
-- [FlutterでGoogleMapが開くときに現在地で表示する](https://zenn.dev/t_sakurai/articles/97b4ee8952e9c7)
+- [Flutter で GoogleMap が開くときに現在地で表示する](https://zenn.dev/t_sakurai/articles/97b4ee8952e9c7)

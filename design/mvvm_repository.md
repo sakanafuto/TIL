@@ -2,16 +2,16 @@
 
 ![](https://miro.medium.com/max/1400/1%2AUj5dnm3RTQ89uidDpcObHw.jpeg)
 
-Repository patternはデータソースへのアクセスを抽象化するためのデザインパターン。
-Repository採用の理由は3つ。
+Repository pattern はデータソースへのアクセスを抽象化するためのデザインパターン。
+Repository 採用の理由は 3 つ。
 
 - データアクセスを再利用するため
-- データの取得時に、「どこからデータを取ってくるか？」という記述をPresentationレイヤーから遮断するため
+- データの取得時に、「どこからデータを取ってくるか？」という記述を Presentation レイヤーから遮断するため
 - データアクセスにおいてライブラリ依存を解決するため。
 
-「Presentationレイヤーはどこからデータを取ってくるか知る必要はなくて、データさえ取れればよい」という考え方。ライブラリに破壊的な変更があった倍位にも、Ripositoryのレイヤーの修正だけで済み、保守性も高まる。
+「Presentation レイヤーはどこからデータを取ってくるか知る必要はなくて、データさえ取れればよい」という考え方。ライブラリに破壊的な変更があった倍位にも、Ripository のレイヤーの修正だけで済み、保守性も高まる。
 
-UseCaseは？
+UseCase は？
 
 ![](https://img.logmi.jp/article_images/XyBh9eUzXdT7FMNCu5CHtj.png)
 
@@ -21,29 +21,28 @@ UseCaseは？
 
 ![](https://img.logmi.jp/article_images/16YGGqgLo7WuazEikPo5qN.png)
 
-Repositoryをデータアクセスのためのレイヤーとしてしまうと、中規模以上の開発の場合、マッピングやバリデーションをViewModelに記述せざるを得なくなり、FatViewModelとなってしまう。
+Repository をデータアクセスのためのレイヤーとしてしまうと、中規模以上の開発の場合、マッピングやバリデーションを ViewModel に記述せざるを得なくなり、FatViewModel となってしまう。
 
 ![](https://img.logmi.jp/article_images/W3JVWXUHK6xW1b1mnGfvoD.png)
-
-
 
 ## Flutter Architecture Blueprints
 
 [Flutter Architecture Blueprints](https://github.com/wasabeef/flutter-architecture-blueprints)
 
-*ChangeNotifier*
-- 値が変更されたことを通知することができるObservable。
-- ViewModelがModelを複数持つような場合、StateNotifierだと1つのクラスしか持てない。
+_ChangeNotifier_
+
+- 値が変更されたことを通知することができる Observable。
+- ViewModel が Model を複数持つような場合、StateNotifier だと 1 つのクラスしか持てない。
 
 ### ViewModel
 
-ChangeNotifierを継承している。
+ChangeNotifier を継承している。
 
-HomeViewModelはChangeNotifierを継承しているため、ChangeNotifierProviderを使用することでHomeViewModelを生成し、後述するView側で読み取ることができる。
+HomeViewModel は ChangeNotifier を継承しているため、ChangeNotifierProvider を使用することで HomeViewModel を生成し、後述する View 側で読み取ることができる。
 
-扱うデータはnewsで、データが更新されたことを通知したい場合にnotifyListenerメソッドを呼ぶことでView側に通知することができるObservable。
+扱うデータは news で、データが更新されたことを通知したい場合に notifyListener メソッドを呼ぶことで View 側に通知することができる Observable。
 
-NewsRepositoryのgetNewsというメソッドを使って、newsデータを取ってきている。
+NewsRepository の getNews というメソッドを使って、news データを取ってきている。
 
 ```dart
 import 'package:app/data/app_error.dart';
@@ -78,17 +77,17 @@ class HomeViewModel extends ChangeNotifier {
 
 ### View
 
-useProviderは、ConsumerWidgetの場合watchすることで再現可能。
+useProvider は、ConsumerWidget の場合 watch することで再現可能。
 
-HookBuilderもFlutter Hooksのクラスである。このビルダーの中でuseProviderを生成して、その値が変更された場合にはこの中だけでリビルドが起こる。Flutter Hooksを使わずにRiverpodだけでやる場合には、Comsumerで同様のことが可能。
+HookBuilder も Flutter Hooks のクラスである。このビルダーの中で useProvider を生成して、その値が変更された場合にはこの中だけでリビルドが起こる。Flutter Hooks を使わずに Riverpod だけでやる場合には、Comsumer で同様のことが可能。
 
-useFutureはFutureBuilderと同じ動作をする。
+useFuture は FutureBuilder と同じ動作をする。
 
-:::details useFutureの例
+:::details useFuture の例
 
-FutureやStreamを扱うもので、FutureBuilderやStreamBuilderが簡単に書けるようになる。以下はpackage_infoを用いてアプリ情報を取得する場合の記述の仕方。
+Future や Stream を扱うもので、FutureBuilder や StreamBuilder が簡単に書けるようになる。以下は package_info を用いてアプリ情報を取得する場合の記述の仕方。
 
-*Hooksなし*
+_Hooks なし_
 
 ```dart
 class NotUseHooksSample extends HookWidget {
@@ -104,7 +103,7 @@ class NotUseHooksSample extends HookWidget {
         }});}}
 ```
 
-*Hooksあり*
+_Hooks あり_
 
 ネストが浅くなりシンプルになる。
 
@@ -124,10 +123,9 @@ class UseFutureSample extends HookWidget {
 
 :::
 
-useMemoizedはAsyncMemoizerと似たよう動作で、配列で渡しているKeysの値が同じならばfetchNewsメソッド部分のキャッシュを返してリビルドしない。ここではnewsデータをtoStringしたものをキーに含めている。
+useMemoized は AsyncMemoizer と似たよう動作で、配列で渡している Keys の値が同じならば fetchNews メソッド部分のキャッシュを返してリビルドしない。ここでは news データを toString したものをキーに含めている。
 
 > 参考: [useXx](https://qiita.com/mkosuke/items/f88419d0f4d41ed6d858)
-
 
 ```dart
 import 'package:app/ui/app_theme.dart';
@@ -193,8 +191,8 @@ class HomePage extends HookWidget {
 
 ### Repository
 
-Freezedを使用しModelを自動生成している。
-NewsRepositoryとNewsRepositoryImplがいる。Repositoryは不要そうに見えるがMVVMとRepository pattern実現する上で、ViewModelがどこからデータを取得・更新するのかを意識させないためにビジネスロジックとデータ操作を分離することを目的としているため必要である。たとえば、ネットワークの状況によってサーバから取得するか、ローカルキャッシュを使うかの決定はRepositoryで行っている。
+Freezed を使用し Model を自動生成している。
+NewsRepository と NewsRepositoryImpl がいる。Repository は不要そうに見えるが MVVM と Repository pattern 実現する上で、ViewModel がどこからデータを取得・更新するのかを意識させないためにビジネスロジックとデータ操作を分離することを目的としているため必要である。たとえば、ネットワークの状況によってサーバから取得するか、ローカルキャッシュを使うかの決定は Repository で行っている。
 
 ```dart
 
@@ -239,9 +237,9 @@ final newsRepositoryProvider = Provider<NewsRepository>(
 
 ### DataSource
 
-DataSourceは実際にサーバーのAPIを叩いたり、ローカルから取得したりする処理を書く。DataSourceを取得先ごとに作ることが一般的。
+DataSource は実際にサーバーの API を叩いたり、ローカルから取得したりする処理を書く。DataSource を取得先ごとに作ることが一般的。
 
-```dart 
+```dart
 
 /// news_data_source.dart
 import 'package:app/data/model/news.dart';
@@ -304,9 +302,9 @@ final newsDataSourceProvider = Provider<NewsDataSource>(
 
 ## 参考
 
-- [「minne」はなぜ「MVVM＋UseCase＋Repository」なのか。3つのアーキテクチャを選んだ5つの理由。](https://logmi.jp/tech/articles/325433)
+- [「minne」はなぜ「MVVM ＋ UseCase ＋ Repository」なのか。3 つのアーキテクチャを選んだ 5 つの理由。](https://logmi.jp/tech/articles/325433)
 
-- [Flutter HooksのuseXXXの使い方](https://qiita.com/mkosuke/items/f88419d0f4d41ed6d858)
-- [【Flutter】dio + freezed でAPIレスポンスをResult<T>で受け取る](https://qiita.com/muttsu-623/items/2fa68fb6689c76f5415f)
-- [Flutter : dioのみでの通信基盤作成](https://qiita.com/Morisan/items/0b90505000d5c3183b9b)
-- [Flutter通信ライブラリ選定 ~ 選ばれたのはRetrofitでした ~](https://qiita.com/Morisan/items/9688ab92ff94024353c5)
+- [Flutter Hooks の useXXX の使い方](https://qiita.com/mkosuke/items/f88419d0f4d41ed6d858)
+- [【Flutter】dio + freezed で API レスポンスを Result<T>で受け取る](https://qiita.com/muttsu-623/items/2fa68fb6689c76f5415f)
+- [Flutter : dio のみでの通信基盤作成](https://qiita.com/Morisan/items/0b90505000d5c3183b9b)
+- [Flutter 通信ライブラリ選定 ~ 選ばれたのは Retrofit でした ~](https://qiita.com/Morisan/items/9688ab92ff94024353c5)
