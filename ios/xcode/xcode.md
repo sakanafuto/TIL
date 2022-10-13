@@ -17,3 +17,11 @@ viewController <=> storyboard とつながっている。
 文字の折返しをしないようにする。
 
 1. Menu > Editor > `Wrap Lines`
+
+## エラー対処法
+
+```
+attach failed (Not allowed to attach to process.  Look in the console messages (Console.app), near the debugserver entries, when the attach failed.  The subsystem that denied the attach permission will likely have logged an informative message about why it was denied.)
+```
+
+- Xcode 再起動
