@@ -135,12 +135,12 @@
   },
   "dart.flutterSdkPath": ".fvm/flutter_sdk",
   "search.exclude": {
-    "**/.fvm": true,
+    "**/.fvm": true
   },
   "files.watcherExclude": {
-    "**/.fvm": true,
+    "**/.fvm": true
   },
   "dart.previewFlutterUiGuides": true,
   "workbench.iconTheme": "material-icon-theme",
-  "git.confirmSync": false,
+  "git.confirmSync": false
 }
