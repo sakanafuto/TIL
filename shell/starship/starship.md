@@ -41,14 +41,14 @@ $ mkdir -p ~/.config && touch ~/.config/starship.toml
 [設定](https://starship.rs/ja-JP/config/)からお好きなようにカスタマイズ。
 たしか Starship はリロード（`$ source ~/.zshrc`）しなくてもすぐ反映されたはず。
 
-7ofuの設定はこちら。紆余曲折を経てシンプルにしてます。
+7ofu の設定はこちら。紆余曲折を経てシンプルにしてます。
 iTerm2 に [Dracula](/shell/dracula.md) のカラバリを設定した上での設定です。
 
 [**starship.toml**](/shell/starship/starship.toml)
 
 ![](/assets/starship.png)
 
-*Shell*
+_Shell_
 
 ## 参考
 

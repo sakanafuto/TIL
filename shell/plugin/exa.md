@@ -1,6 +1,6 @@
 # exa
 
-Rustで書かれている。lsの代用です。
+Rust で書かれている。ls の代用です。
 設定しているエイリアスは以下の通り。
 
 ```shell
@@ -13,6 +13,5 @@ Rustで書かれている。lsの代用です。
   11   │ alias lta='exa -T -a -I "node_modules|.git|.cache" --color=always --icons | less -r'
   12   │ alias l='clear && ls'p
 ```
-
 
 - [github](https://github.com/ogham/exa)
