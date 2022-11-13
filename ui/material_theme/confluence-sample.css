@@ -1,0 +1,139 @@
+/* Custom styles for Confluence (included for all themes by default) */
+
+.wiki-content,
+.wiki-content p,
+.wiki-content table,
+.wiki-content tr,
+.wiki-content td,
+.wiki-content th,
+.wiki-content ol,
+.wiki-content ul,
+.wiki-content li {
+  font-family: Times, 'Times New Roman', serif;
+  font-size: 14px;
+}
+
+.wiki-content h2 {
+  padding-bottom: 0.5em;
+  border-bottom: 3px double #333333;
+}
+
+.wiki-content h3 {
+  padding: 0.25em 0 0.25em 0.75em;
+  border-left: 6px solid #333333;
+}
+
+/*****************************************************
+** PUT SPACE SPECIFIC STYLING HERE
+***************************************************/
+
+#children-section {
+  display: none;
+}
+
+#navigation ul.ajs-menu-bar {
+  opacity: 0.5;
+}
+/***************************************************
+** ATTACHMENTS FILENAME COLUMN OVERIDE (optional)
+***************************************************/
+#view-attachments .filename-column {
+  width: 250px;
+}
+
+/***************************************************
+** SCROLL VERSIONS OVERIDES
+***************************************************/
+
+#labels-section {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/***************************************************
+** ATLASSIAN DOCUMENTATION THEME
+***************************************************/
+
+#main {
+  background: #fffbfe;
+}
+
+.acs-sidebar {
+  background: #E7E0EC!;
+}
+
+p,
+tr,
+td,
+body,
+table,
+.bodytext,
+.stepfield,
+.panelContent,
+.wiki-content p,
+.wiki-content h1,
+.wiki-content h2,
+.wiki-content h3,
+.wiki-content h4,
+.wiki-content h5,
+.wiki-content h6 {
+  color: #333;
+}
+
+/***************************************************
+** CONFLUENCE HEADER
+***************************************************/
+
+#browse-menu-link {
+  opacity: 0.5;
+}
+
+#browse-menu-link:hover {
+  opacity: 1;
+}
+
+/***************************************************
+** LIKES & LABELS
+***************************************************/
+
+#likes-and-labels-container {
+  margin: 50px 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+/***************************************************
+** CHILDREN SECTION
+***************************************************/
+
+#children-section {
+  margin-bottom: 50px;
+}
+
+/******/
+
+/***************************************************
+** APP
+***************************************************/
+
+.wiki-content h1 {
+  padding: 0.25em 0 0.5em;
+  border-bottom: 4px solid #3e001d;
+}
+
+.wiki-content h2 {
+  padding: 0.25em 0 0.5em;
+  border-bottom: 3px double #3e001d;
+}
+
+.wiki-content h3 {
+  padding: 0.25em 0 0.25em 0.75em;
+  border-left: 4px solid #3e001d;
+}
+
+.wiki-content h4 {
+  display: inline-block;
+  padding: 0.25em 0.5em 0.5em;
+  border-bottom: 1px dashed #3e001d;
+}

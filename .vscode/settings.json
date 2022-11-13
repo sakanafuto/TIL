@@ -140,5 +140,8 @@
   },
   "dart.previewFlutterUiGuides": true,
   "workbench.iconTheme": "material-icon-theme",
-  "git.confirmSync": false
+  "git.confirmSync": false,
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
